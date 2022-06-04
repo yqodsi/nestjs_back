@@ -19,13 +19,23 @@ let AuthController = class AuthController {
     constructor(authservice) {
         this.authservice = authservice;
     }
+    signup(dto) {
+        console.log({ dto });
+        return this.authservice.signup();
+    }
     signin(dto) {
         console.log({ dto });
         return this.authservice.signin();
     }
 };
 __decorate([
-    (0, common_1.Post)('signin'),
+    (0, common_1.Post)('signup'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "signup", null);
+__decorate([
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

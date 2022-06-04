@@ -11,12 +11,12 @@ datasource db {
 }
 
 model User {
-  id          String @id @default(cuid())
+  id          Int @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  login       String  @unique
-  name        String
+  login       String?  @unique
+  name        String?
   email       String
   hash        String
-  avatarUrl   String
+  avatarUrl   String?
 }

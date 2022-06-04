@@ -2,7 +2,6 @@ import { AuthService } from './auth.service';
 export declare class AuthController {
     private authservice;
     constructor(authservice: AuthService);
-    signin(dto: any): {
-        msg: string;
-    };
+    signup(dto: any): Promise<string>;
+    signin(dto: any): Promise<void>;
 }

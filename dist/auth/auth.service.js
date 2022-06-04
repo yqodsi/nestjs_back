@@ -10,15 +10,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
-const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const common_1 = require("@nestjs/common");
 let AuthService = class AuthService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    signin() {
-        return { msg: 'hello' };
+    async signup() {
+        return "this.prisma.user.create({ data: { email: 'test' } });";
     }
+    async signin() { }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
