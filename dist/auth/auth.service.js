@@ -12,14 +12,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const prisma_service_1 = require("../prisma/prisma.service");
 const common_1 = require("@nestjs/common");
+const argon = require("argon2");
+const runtime_1 = require("@prisma/client/runtime");
 let AuthService = class AuthService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async signup() {
-        return "this.prisma.user.create({ data: { email: 'test' } });";
+    async signup(dto) {
+        const hash = await argon.hash(dto.password);
+        try {
+            const user = await this.prisma.user.create({
+                data: {
+                    email: dto.email,
+                    hash,
+                },
+            });
+            delete user.hash;
+            return user;
+        }
+        catch (err) {
+            if (err instanceof runtime_1.PrismaClientKnownRequestError) {
+                if (err.code === 'P2002') {
+                    throw new common_1.ForbiddenException('user already exist');
+                }
+            }
+            throw err;
+        }
     }
-    async signin() { }
+    async signin(dto) {
+        const user = await this.prisma.user.findUnique({
+            where: {
+                email: dto.email,
+            },
+        });
+        if (!user)
+            throw new common_1.ForbiddenException('Credentials incorrect');
+        const pwMatch = await argon.verify(user.hash, dto.password);
+        if (!pwMatch)
+            throw new common_1.ForbiddenException('Credentials incorrect');
+        delete user.hash;
+        return user;
+    }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
