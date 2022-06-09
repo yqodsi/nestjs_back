@@ -10,17 +10,6 @@ exports.Passport42AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 let Passport42AuthGuard = class Passport42AuthGuard extends (0, passport_1.AuthGuard)('42') {
-    handleRequest(err, user, info) {
-        if (info &&
-            info.message ===
-                'The resource owner or authorization server denied the request.')
-            return 'failure';
-        else if (err || !user) {
-            console.log('here');
-            throw err || new common_1.UnauthorizedException();
-        }
-        return user;
-    }
 };
 Passport42AuthGuard = __decorate([
     (0, common_1.Injectable)()

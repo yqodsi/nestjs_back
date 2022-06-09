@@ -31,14 +31,30 @@ let Passport42Strategy = class Passport42Strategy extends (0, passport_1.Passpor
                 email: 'email',
                 avatarUrl: 'image_url',
             },
+        }, async (accessToken, refreshToken, expires_in, profile, done) => {
+            const user = await this.prisma.user.findUnique({
+                where: {
+                    twentyFourId: profile.id,
+                },
+            });
+            if (!user) {
+                await this.prisma.user.create({
+                    data: {
+                        twentyFourId: profile.id,
+                        email: profile.email,
+                        avatarUrl: profile.avatarUrl,
+                        login: profile.login,
+                    },
+                });
+            }
+            console.log(user);
+            return done(null, profile, {
+                accessToken,
+                refreshToken,
+                expires_in,
+            });
         });
         this.prisma = prisma;
-    }
-    async validate(accessToken, refreshToken, profile, done) {
-        const { email, login, name } = profile;
-        console.log(email, login, name);
-        const user = { email };
-        done(null, user);
     }
 };
 Passport42Strategy = __decorate([

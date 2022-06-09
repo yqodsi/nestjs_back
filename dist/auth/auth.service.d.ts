@@ -1,8 +1,9 @@
 import { PrismaService } from '../prisma/prisma.service';
-import { AuthDto } from './dto';
+import { JwtService } from '@nestjs/jwt';
+import { Profile } from 'passport-42';
 export declare class AuthService {
     private prisma;
-    constructor(prisma: PrismaService);
-    signup(dto: AuthDto): Promise<import(".prisma/client").User>;
-    signin(dto: AuthDto): Promise<import(".prisma/client").User>;
+    private readonly jwtService;
+    constructor(prisma: PrismaService, jwtService: JwtService);
+    login(user: Profile): string;
 }
