@@ -6,27 +6,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.Passport42AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
-const auth_module_1 = require("./auth/auth.module");
-const user_module_1 = require("./user/user.module");
-const prisma_module_1 = require("./prisma/prisma.module");
-const config_1 = require("@nestjs/config");
 const passport_1 = require("@nestjs/passport");
-let AppModule = class AppModule {
+let Passport42AuthGuard = class Passport42AuthGuard extends (0, passport_1.AuthGuard)('42') {
 };
-AppModule = __decorate([
-    (0, common_1.Module)({
-        imports: [
-            passport_1.PassportModule,
-            config_1.ConfigModule.forRoot({
-                isGlobal: true,
-            }),
-            auth_module_1.AuthModule,
-            user_module_1.UserModule,
-            prisma_module_1.PrismaModule,
-        ],
-    })
-], AppModule);
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+Passport42AuthGuard = __decorate([
+    (0, common_1.Injectable)()
+], Passport42AuthGuard);
+exports.Passport42AuthGuard = Passport42AuthGuard;
+//# sourceMappingURL=passport.guard.js.map

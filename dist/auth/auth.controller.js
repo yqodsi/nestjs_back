@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const guards_1 = require("./guards");
+const passport_guard_1 = require("./guards/passport.guard");
+const jwt_guard_1 = require("./guards/jwt.guard");
 let AuthController = class AuthController {
     constructor(authservice) {
         this.authservice = authservice;
@@ -26,28 +27,30 @@ let AuthController = class AuthController {
     async spotifyAuthRedirect(req, res) {
         const { user, authInfo, } = req;
         if (!user) {
-            res.redirect('/');
+            res.redirect("/");
             return;
         }
         req.user = undefined;
         const jwt = this.authservice.login(user);
-        res.set('authorization', `Bearer ${jwt}`);
-        console.log(user.id);
+        res.set("authorization", `Bearer ${jwt}`);
+        console.log(jwt);
         return res.status(201).json({ authInfo, user });
     }
-    status() { }
+    status(req) {
+        return req.user;
+    }
     logout() { }
 };
 __decorate([
-    (0, common_1.Get)('login'),
-    (0, common_1.UseGuards)(guards_1.Passport42AuthGuard),
+    (0, common_1.Get)("login"),
+    (0, common_1.UseGuards)(passport_guard_1.Passport42AuthGuard),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
 __decorate([
-    (0, common_1.Get)('redirect'),
-    (0, common_1.UseGuards)(guards_1.Passport42AuthGuard),
+    (0, common_1.Get)("redirect"),
+    (0, common_1.UseGuards)(passport_guard_1.Passport42AuthGuard),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
@@ -55,19 +58,21 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "spotifyAuthRedirect", null);
 __decorate([
-    (0, common_1.Get)('status'),
+    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
+    (0, common_1.Get)("status"),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", String)
 ], AuthController.prototype, "status", null);
 __decorate([
-    (0, common_1.Get)('logout'),
+    (0, common_1.Get)("logout"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "logout", null);
 AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
+    (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 exports.AuthController = AuthController;

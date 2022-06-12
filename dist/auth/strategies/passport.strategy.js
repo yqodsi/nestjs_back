@@ -46,9 +46,9 @@ let Passport42Strategy = class Passport42Strategy extends (0, passport_1.Passpor
                         login: profile.login,
                     },
                 });
-                console.log("User Created" + user);
             }
             else {
+                console.log(process.env.JWT_SECRET);
                 console.log("User Exist!" + user);
             }
             return done(null, profile, {
@@ -65,4 +65,4 @@ Passport42Strategy = __decorate([
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], Passport42Strategy);
 exports.Passport42Strategy = Passport42Strategy;
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=passport.strategy.js.map

@@ -2,7 +2,6 @@ import { Strategy, Profile, VerifyCallback } from 'passport-42';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { log } from 'console';
 import { userInfo } from 'os';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
@@ -49,7 +48,10 @@ export class Passport42Strategy extends PassportStrategy(Strategy) {
             },
           });
         }
-        console.log(user);
+        else {
+          console.log( process.env.JWT_SECRET);
+          console.log("User Exist!" + user);
+        }
 
         return done(null, profile, {
           accessToken,

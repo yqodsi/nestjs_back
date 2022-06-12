@@ -18,13 +18,14 @@ let AuthService = class AuthService {
         this.prisma = prisma;
         this.jwtService = jwtService;
     }
-    login(user) {
+    async login(user) {
         const payload = {
             name: user.username,
             sub: user.id,
         };
-        console.log(this.jwtService.sign(payload));
-        return this.jwtService.sign(payload);
+        return {
+            access_token: this.jwtService.sign(payload),
+        };
     }
 };
 AuthService = __decorate([

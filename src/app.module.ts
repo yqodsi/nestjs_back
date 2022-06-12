@@ -7,9 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
-    PassportModule.register({
-      session: true,
-    }),
+    PassportModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
