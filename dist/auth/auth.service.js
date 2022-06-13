@@ -12,26 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const prisma_service_1 = require("../prisma/prisma.service");
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
-    constructor(prisma, jwtService) {
+    constructor(prisma) {
         this.prisma = prisma;
-        this.jwtService = jwtService;
     }
     async login(user) {
         const payload = {
             name: user.username,
             sub: user.id,
         };
-        return {
-            access_token: this.jwtService.sign(payload),
-        };
+        return {};
     }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        jwt_1.JwtService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], AuthService);
 exports.AuthService = AuthService;
 //# sourceMappingURL=auth.service.js.map

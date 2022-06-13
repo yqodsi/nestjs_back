@@ -5,20 +5,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-exports.__esModule = true;
-exports.AuthDto = void 0;
-var class_validator_1 = require("class-validator");
-var AuthDto = /** @class */ (function () {
-    function AuthDto() {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SessionSerializer = void 0;
+const passport_1 = require("@nestjs/passport");
+const common_1 = require("@nestjs/common");
+let SessionSerializer = class SessionSerializer extends passport_1.PassportSerializer {
+    serializeUser(user, done) {
+        done(null, { id:  });
     }
-    __decorate([
-        (0, class_validator_1.IsEmail)(),
-        (0, class_validator_1.IsNotEmpty)()
-    ], AuthDto.prototype, "email");
-    __decorate([
-        (0, class_validator_1.IsString)(),
-        (0, class_validator_1.IsNotEmpty)()
-    ], AuthDto.prototype, "password");
-    return AuthDto;
-}());
-exports.AuthDto = AuthDto;
+    deserializeUser(payload, done) {
+    }
+};
+SessionSerializer = __decorate([
+    (0, common_1.Injectable)()
+], SessionSerializer);
+exports.SessionSerializer = SessionSerializer;
+//# sourceMappingURL=Serializer.js.map

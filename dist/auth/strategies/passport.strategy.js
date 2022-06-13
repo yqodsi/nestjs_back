@@ -20,44 +20,15 @@ let Passport42Strategy = class Passport42Strategy extends (0, passport_1.Passpor
             clientID: process.env.PASSPORT_ID,
             clientSecret: process.env.PASSPORT_SECRET,
             callbackURL: process.env.PASSPORT_REDIRECT_URL,
-            profileFields: {
-                id: function (obj) {
-                    return String(obj.id);
-                },
-                login: 'login',
-                name: 'displayname',
-                last_name: 'last_name',
-                first_name: 'first_name',
-                email: 'email',
-                avatarUrl: 'image_url',
-            },
-        }, async (accessToken, refreshToken, expires_in, profile, done) => {
-            const user = await this.prisma.user.findUnique({
-                where: {
-                    twentyFourId: profile.id,
-                },
-            });
-            if (!user) {
-                await this.prisma.user.create({
-                    data: {
-                        twentyFourId: profile.id,
-                        email: profile.email,
-                        avatarUrl: profile.avatarUrl,
-                        login: profile.login,
-                    },
-                });
-            }
-            else {
-                console.log(process.env.JWT_SECRET);
-                console.log("User Exist!" + user);
-            }
-            return done(null, profile, {
-                accessToken,
-                refreshToken,
-                expires_in,
-            });
         });
         this.prisma = prisma;
+    }
+    async validate(accessToken, refreshToken, profile) {
+        const { username, id, photos, emails } = profile;
+        const email = emails[0].value;
+        const avatar = photos[0].value;
+        console.log(username, id, avatar, email);
+        return profile;
     }
 };
 Passport42Strategy = __decorate([

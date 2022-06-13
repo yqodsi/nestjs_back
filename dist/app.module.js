@@ -18,7 +18,7 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            passport_1.PassportModule,
+            passport_1.PassportModule.register({ session: true }),
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
             }),

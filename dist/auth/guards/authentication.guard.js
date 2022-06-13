@@ -6,19 +6,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Passport42AuthGuard = void 0;
+exports.AuthenticationGuard = void 0;
 const common_1 = require("@nestjs/common");
-const passport_1 = require("@nestjs/passport");
-let Passport42AuthGuard = class Passport42AuthGuard extends (0, passport_1.AuthGuard)("42") {
+let AuthenticationGuard = class AuthenticationGuard {
     async canActivate(context) {
-        const activate = (await super.canActivate(context));
         const request = context.switchToHttp().getRequest();
-        await super.logIn(request);
-        return activate;
+        return request.isAuthenticated();
     }
 };
-Passport42AuthGuard = __decorate([
+AuthenticationGuard = __decorate([
     (0, common_1.Injectable)()
-], Passport42AuthGuard);
-exports.Passport42AuthGuard = Passport42AuthGuard;
-//# sourceMappingURL=passport.guard.js.map
+], AuthenticationGuard);
+exports.AuthenticationGuard = AuthenticationGuard;
+//# sourceMappingURL=authentication.guard.js.map

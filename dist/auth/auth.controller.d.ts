@@ -4,7 +4,9 @@ export declare class AuthController {
     private authservice;
     constructor(authservice: AuthService);
     login(): void;
-    spotifyAuthRedirect(req: any, res: Response): Promise<Response>;
+    redirect(res: Response): Promise<void>;
     status(req: any): string;
-    logout(): void;
+    logout(): {
+        msg: string;
+    };
 }

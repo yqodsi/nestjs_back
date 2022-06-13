@@ -16,7 +16,7 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const passport_guard_1 = require("./guards/passport.guard");
-const jwt_guard_1 = require("./guards/jwt.guard");
+const authentication_guard_1 = require("./guards/authentication.guard");
 let AuthController = class AuthController {
     constructor(authservice) {
         this.authservice = authservice;
@@ -24,22 +24,13 @@ let AuthController = class AuthController {
     login() {
         return;
     }
-    async spotifyAuthRedirect(req, res) {
-        const { user, authInfo, } = req;
-        if (!user) {
-            res.redirect("/");
-            return;
-        }
-        req.user = undefined;
-        const jwt = this.authservice.login(user);
-        res.set("authorization", `Bearer ${jwt}`);
-        console.log(jwt);
-        return res.status(201).json({ authInfo, user });
-    }
+    async redirect(res) { }
     status(req) {
         return req.user;
     }
-    logout() { }
+    logout() {
+        return { msg: 'lalal' };
+    }
 };
 __decorate([
     (0, common_1.Get)("login"),
@@ -51,14 +42,12 @@ __decorate([
 __decorate([
     (0, common_1.Get)("redirect"),
     (0, common_1.UseGuards)(passport_guard_1.Passport42AuthGuard),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Res)()),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "spotifyAuthRedirect", null);
+], AuthController.prototype, "redirect", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtAuthGuard),
     (0, common_1.Get)("status"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -66,6 +55,7 @@ __decorate([
     __metadata("design:returntype", String)
 ], AuthController.prototype, "status", null);
 __decorate([
+    (0, common_1.UseGuards)(authentication_guard_1.AuthenticationGuard),
     (0, common_1.Get)("logout"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
