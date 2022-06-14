@@ -35,7 +35,9 @@ export class AuthController {
 
   @Get("redirect")
   @UseGuards(Passport42AuthGuard)
-  async redirect(@Res() res: Response) {}
+  async redirect(@Res() res: Response) {
+    res.sendStatus(200);
+  }
 
   /**
    * Get /api/auth/status

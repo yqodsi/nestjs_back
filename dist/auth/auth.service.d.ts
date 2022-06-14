@@ -1,7 +1,10 @@
 import { PrismaService } from "../prisma/prisma.service";
-import { Profile } from "passport-42";
-export declare class AuthService {
+import { AuthenticationProvider } from "./utils/auth";
+import { UserDetails } from "./utils/types";
+export declare class AuthService implements AuthenticationProvider {
     private prisma;
     constructor(prisma: PrismaService);
-    login(user: Profile): Promise<{}>;
+    validateUser(details: UserDetails): Promise<import(".prisma/client").User>;
+    createUser(details: UserDetails): void;
+    findUser(details: UserDetails): void;
 }

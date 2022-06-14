@@ -13,7 +13,7 @@ async function bootstrap() {
   app.use(
     session({
       cookie: {
-        maxAge: 8640000,
+        maxAge: 5000000000,
       },
       secret: "ksdhdfgdfgdfgdfg",
       resave: false,

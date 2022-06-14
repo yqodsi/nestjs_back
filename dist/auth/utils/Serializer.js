@@ -11,7 +11,8 @@ const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
 let SessionSerializer = class SessionSerializer extends passport_1.PassportSerializer {
     serializeUser(user, done) {
-        done(null, { id:  });
+        console.log(user);
+        done(null, { id: user.id });
     }
     deserializeUser(payload, done) {
     }

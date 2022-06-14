@@ -24,7 +24,9 @@ let AuthController = class AuthController {
     login() {
         return;
     }
-    async redirect(res) { }
+    async redirect(res) {
+        res.sendStatus(200);
+    }
     status(req) {
         return req.user;
     }

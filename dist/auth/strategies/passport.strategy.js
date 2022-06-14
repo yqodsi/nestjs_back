@@ -13,27 +13,27 @@ exports.Passport42Strategy = void 0;
 const passport_42_1 = require("passport-42");
 const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
-const prisma_service_1 = require("../../prisma/prisma.service");
+const auth_service_1 = require("../auth.service");
 let Passport42Strategy = class Passport42Strategy extends (0, passport_1.PassportStrategy)(passport_42_1.Strategy) {
-    constructor(prisma) {
+    constructor(authService) {
         super({
             clientID: process.env.PASSPORT_ID,
             clientSecret: process.env.PASSPORT_SECRET,
             callbackURL: process.env.PASSPORT_REDIRECT_URL,
         });
-        this.prisma = prisma;
+        this.authService = authService;
     }
     async validate(accessToken, refreshToken, profile) {
         const { username, id, photos, emails } = profile;
         const email = emails[0].value;
         const avatar = photos[0].value;
-        console.log(username, id, avatar, email);
-        return profile;
+        const details = { username, id, avatar, email };
+        await this.authService.validateUser(details);
     }
 };
 Passport42Strategy = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], Passport42Strategy);
 exports.Passport42Strategy = Passport42Strategy;
 //# sourceMappingURL=passport.strategy.js.map

@@ -12,15 +12,19 @@ const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const passport_strategy_1 = require("./strategies/passport.strategy");
 const passport_1 = require("@nestjs/passport");
+const Serializer_1 = require("./utils/Serializer");
+const prisma_module_1 = require("../prisma/prisma.module");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            passport_1.PassportModule,
-        ],
+        imports: [passport_1.PassportModule.register({ session: true }), prisma_module_1.PrismaModule],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, passport_strategy_1.Passport42Strategy],
+        providers: [
+            passport_strategy_1.Passport42Strategy,
+            Serializer_1.SessionSerializer,
+            auth_service_1.AuthService,
+        ],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;
