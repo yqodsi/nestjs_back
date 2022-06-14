@@ -5,7 +5,7 @@ import { PrismaService } from "../../prisma/prisma.service";
 import { userInfo } from "os";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { AuthenticationProvider } from "../utils/auth";
-import { AuthService } from '../auth.service';
+import { AuthService } from "../auth.service";
 
 @Injectable()
 export class Passport42Strategy extends PassportStrategy(Strategy) {
@@ -17,10 +17,10 @@ export class Passport42Strategy extends PassportStrategy(Strategy) {
     });
   }
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
-    const { username, id, photos, emails } = profile;
-    const email = emails[0].value;
-    const avatar = photos[0].value;
-    const details = { username, id, avatar, email };
+    const { username, id: twentyFourId, photos, emails } = profile;
+    const email = emails[0].value as string;
+    const avatar = photos[0].value as string;
+    const details = { username, twentyFourId, avatar, email };
     await this.authService.validateUser(details);
   }
 }

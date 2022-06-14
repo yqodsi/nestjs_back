@@ -11,7 +11,7 @@ import { AuthService } from "./auth.service";
 import { Passport42AuthGuard } from "./guards/passport.guard";
 import { Response } from "express";
 import { Profile } from "passport-42";
-import { AuthenticationGuard } from './guards/authentication.guard';
+import { AuthenticationGuard } from "./guards/authentication.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -55,6 +55,6 @@ export class AuthController {
   @UseGuards(AuthenticationGuard)
   @Get("logout")
   logout() {
-    return {msg : 'lalal'}
+    return { msg: "lalal" };
   }
 }

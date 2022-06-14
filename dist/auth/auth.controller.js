@@ -31,7 +31,7 @@ let AuthController = class AuthController {
         return req.user;
     }
     logout() {
-        return { msg: 'lalal' };
+        return { msg: "lalal" };
     }
 };
 __decorate([

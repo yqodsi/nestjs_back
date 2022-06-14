@@ -1,14 +1,19 @@
 import { PassportSerializer } from "@nestjs/passport";
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
+import { AuthService } from "../auth.service";
+import { User } from "@prisma/client";
 
 @Injectable()
 export class SessionSerializer extends PassportSerializer {
-
-    serializeUser(user: any, done: (err: Error, user: any) => void): any {
-        console.log(user);
-        done(null, {id: user.id})
-    }
-    deserializeUser(payload: any, done: (err: Error, user: any) => void): any {
-
-    }
+  constructor(private authService: AuthService) {
+    super();
+  }
+  serializeUser(user: User, done: (err: Error, user: User) => void) {
+    done(null, user);
+  }
+  async deserializeUser(user: User, done: (err: Error, user: User) => void) {
+    const userDB = await this.authService.findUser(user.twentyFourId);
+    console.log("userdb", userDB);
+    return userDB ? done(null, userDB) : done(null, null);
+  }
 }

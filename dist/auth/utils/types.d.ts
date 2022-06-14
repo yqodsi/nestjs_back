@@ -1,6 +1,6 @@
 export declare type UserDetails = {
     username: string;
-    id: string;
+    twentyFourId: string;
     avatar: string;
     email: string;
 };

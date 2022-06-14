@@ -17,21 +17,36 @@ let AuthService = class AuthService {
         this.prisma = prisma;
     }
     async validateUser(details) {
-        const { id } = details;
-        const idParsed = parseInt(id);
+        const { twentyFourId } = details;
+        console.log(twentyFourId);
         const user = await this.prisma.user.findUnique({
             where: {
-                id: idParsed,
+                twentyFourId,
             },
         });
+        console.log(user);
         if (user)
             return user;
-        const newUser = await this.createUser(details);
+        return await this.createUser(details);
     }
-    createUser(details) {
-        console.log('creating user');
+    async createUser(details) {
+        console.log("creating user", details);
+        const user = await this.prisma.user.create({
+            data: {
+                twentyFourId: details.twentyFourId,
+                email: details.email,
+                avatarUrl: details.avatar,
+                username: details.username,
+            },
+        });
     }
-    findUser(details) { }
+    async findUser(twentyFourId) {
+        return await this.prisma.user.findUnique({
+            where: {
+                twentyFourId,
+            },
+        });
+    }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),

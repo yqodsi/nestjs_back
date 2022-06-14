@@ -24,10 +24,10 @@ let Passport42Strategy = class Passport42Strategy extends (0, passport_1.Passpor
         this.authService = authService;
     }
     async validate(accessToken, refreshToken, profile) {
-        const { username, id, photos, emails } = profile;
+        const { username, id: twentyFourId, photos, emails } = profile;
         const email = emails[0].value;
         const avatar = photos[0].value;
-        const details = { username, id, avatar, email };
+        const details = { username, twentyFourId, avatar, email };
         await this.authService.validateUser(details);
     }
 };
