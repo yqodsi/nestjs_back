@@ -25,7 +25,7 @@ let AuthController = class AuthController {
         return;
     }
     async redirect(res) {
-        res.sendStatus(200);
+        return this.authservice.redirect(res);
     }
     status(req) {
         return req.user;
@@ -64,6 +64,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "logout", null);
 AuthController = __decorate([
+    (0, common_1.UseInterceptors)(common_1.CacheInterceptor),
     (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);

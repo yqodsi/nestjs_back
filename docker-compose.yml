@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 services:
   dev-db:
     image: postgres:14.0
@@ -7,9 +7,20 @@ services:
       - POSTGRES_PASSWORD=123
       - POSTGRES_DB=nest
     ports:
-      - '5432:5432'
+      - "5432:5432"
     networks:
       - nestnet
     restart: always
+
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - nestnet
+    restart: always
+
+    
 networks:
   nestnet:

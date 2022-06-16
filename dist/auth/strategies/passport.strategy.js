@@ -28,7 +28,7 @@ let Passport42Strategy = class Passport42Strategy extends (0, passport_1.Passpor
         const email = emails[0].value;
         const avatar = photos[0].value;
         const details = { username, twentyFourId, avatar, email };
-        await this.authService.validateUser(details);
+        return this.authService.validateUser(details);
     }
 };
 Passport42Strategy = __decorate([

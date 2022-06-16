@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 let AuthenticationGuard = class AuthenticationGuard {
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
+        console.log(request.isAuthenticated());
         return request.isAuthenticated();
     }
 };

@@ -10,8 +10,9 @@ async function bootstrap() {
     const PORT = process.env.PORT || 3003;
     app.use(session({
         cookie: {
-            maxAge: 5000000000,
+            maxAge: 360000000,
         },
+        name: "COOKIE_NAME",
         secret: "ksdhdfgdfgdfgdfg",
         resave: false,
         saveUninitialized: false,

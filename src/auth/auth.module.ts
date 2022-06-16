@@ -7,7 +7,7 @@ import { SessionSerializer } from "./utils/Serializer";
 import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [PassportModule.register({ session: true }), PrismaModule],
+  imports: [PassportModule.register({ session: true }), PrismaModule,],
   controllers: [AuthController],
   providers: [
     Passport42Strategy,

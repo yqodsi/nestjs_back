@@ -13,11 +13,18 @@ const user_module_1 = require("./user/user.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const config_1 = require("@nestjs/config");
 const passport_1 = require("@nestjs/passport");
+const redisStore = require("cache-manager-redis-store");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            common_1.CacheModule.register({
+                isGlobal: true,
+                store: redisStore,
+                host: "localhost",
+                port: 6379,
+            }),
             passport_1.PassportModule.register({ session: true }),
             config_1.ConfigModule.forRoot({
                 isGlobal: true,

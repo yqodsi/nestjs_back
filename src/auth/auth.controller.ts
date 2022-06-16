@@ -6,6 +6,8 @@ import {
   UseGuards,
   Res,
   Req,
+  UseInterceptors,
+  CacheInterceptor,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Passport42AuthGuard } from "./guards/passport.guard";
@@ -13,6 +15,7 @@ import { Response } from "express";
 import { Profile } from "passport-42";
 import { AuthenticationGuard } from "./guards/authentication.guard";
 
+@UseInterceptors(CacheInterceptor)
 @Controller("auth")
 export class AuthController {
   constructor(private authservice: AuthService) {}
@@ -36,7 +39,7 @@ export class AuthController {
   @Get("redirect")
   @UseGuards(Passport42AuthGuard)
   async redirect(@Res() res: Response) {
-    res.sendStatus(200);
+    return this.authservice.redirect(res);
   }
 
   /**

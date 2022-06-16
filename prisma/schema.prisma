@@ -14,7 +14,7 @@ model User {
   id          Int @id @default(autoincrement()) @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  twentyFourId    String 
+  twentyFourId    String @unique
   username String?
   customName        String?
   email       String?

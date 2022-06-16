@@ -21,6 +21,6 @@ export class Passport42Strategy extends PassportStrategy(Strategy) {
     const email = emails[0].value as string;
     const avatar = photos[0].value as string;
     const details = { username, twentyFourId, avatar, email };
-    await this.authService.validateUser(details);
+    return this.authService.validateUser(details);
   }
 }

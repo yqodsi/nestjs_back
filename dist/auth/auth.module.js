@@ -18,7 +18,7 @@ let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [passport_1.PassportModule.register({ session: true }), prisma_module_1.PrismaModule],
+        imports: [passport_1.PassportModule.register({ session: true }), prisma_module_1.PrismaModule,],
         controllers: [auth_controller_1.AuthController],
         providers: [
             passport_strategy_1.Passport42Strategy,

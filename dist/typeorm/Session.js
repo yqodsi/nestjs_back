@@ -9,19 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthDto = void 0;
-const class_validator_1 = require("class-validator");
-class AuthDto {
-}
+exports.SessionEntity = void 0;
+const typeorm_1 = require("typeorm");
+let SessionEntity = class SessionEntity {
+    constructor() {
+        this.expiredAt = Date.now();
+        this.id = '';
+        this.json = '';
+    }
+};
 __decorate([
-    (0, class_validator_1.IsEmail)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], AuthDto.prototype, "email", void 0);
+    (0, typeorm_1.Index)(),
+    (0, typeorm_1.Column)('bigint'),
+    __metadata("design:type", Object)
+], SessionEntity.prototype, "expiredAt", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], AuthDto.prototype, "password", void 0);
-exports.AuthDto = AuthDto;
-//# sourceMappingURL=auth.dto.js.map
+    (0, typeorm_1.PrimaryColumn)('varchar', { length: 255 }),
+    __metadata("design:type", Object)
+], SessionEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)('text'),
+    __metadata("design:type", Object)
+], SessionEntity.prototype, "json", void 0);
+SessionEntity = __decorate([
+    (0, typeorm_1.Entity)()
+], SessionEntity);
+exports.SessionEntity = SessionEntity;
+//# sourceMappingURL=Session.js.map
