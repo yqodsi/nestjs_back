@@ -1,5 +1,20 @@
 version: "3.3"
 services:
+  # dev:
+  #   container_name: nestjs_api_dev
+  #   image: nestjs-api-dev:1.0.0
+  #   build:
+  #     context: .
+  #     dockerfile: ./Dockerfile
+  #   command: npm run start:debug
+  #   ports:
+  #     - 3333:3333
+  #   networks:
+  #     - nestnet
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   restart: unless-stopped
   dev-db:
     image: postgres:14.0
     environment:
@@ -12,7 +27,6 @@ services:
       - nestnet
     restart: always
 
-
   redis:
     image: redis:latest
     ports:
@@ -20,7 +34,10 @@ services:
     networks:
       - nestnet
     restart: always
-
-    
+  rcli:
+    image: redis:latest
+    links:
+      - redis
+    command: redis-cli -h redis
 networks:
   nestnet:

@@ -6,7 +6,5 @@ export declare class AuthController {
     login(): void;
     redirect(res: Response): Promise<void>;
     status(req: any): string;
-    logout(): {
-        msg: string;
-    };
+    logout(res: Response): void;
 }

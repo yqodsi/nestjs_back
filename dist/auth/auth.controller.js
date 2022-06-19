@@ -25,13 +25,14 @@ let AuthController = class AuthController {
         return;
     }
     async redirect(res) {
+        console.log('here');
         return this.authservice.redirect(res);
     }
     status(req) {
         return req.user;
     }
-    logout() {
-        return { msg: "lalal" };
+    logout(res) {
+        res.sendStatus(200);
     }
 };
 __decorate([
@@ -59,12 +60,12 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(authentication_guard_1.AuthenticationGuard),
     (0, common_1.Get)("logout"),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "logout", null);
 AuthController = __decorate([
-    (0, common_1.UseInterceptors)(common_1.CacheInterceptor),
     (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
