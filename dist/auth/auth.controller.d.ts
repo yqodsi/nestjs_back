@@ -5,6 +5,6 @@ export declare class AuthController {
     constructor(authservice: AuthService);
     login(): void;
     redirect(res: Response): Promise<void>;
-    status(req: any): string;
+    status(req: any): void;
     logout(res: Response): void;
 }

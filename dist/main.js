@@ -8,18 +8,17 @@ const prisma_session_store_1 = require("@quixo3/prisma-session-store");
 const client_1 = require("@prisma/client");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.setGlobalPrefix("api");
     const PORT = process.env.PORT || 3003;
+    app.setGlobalPrefix("api");
     app.use(session({
         cookie: {
-            maxAge: 1000,
+            maxAge: 365 * 24 * 60 * 60 * 1000,
         },
-        name: "COOKIE_NAME",
-        secret: "ksdhdfgdfgdfgdfg",
+        secret: "secret",
         resave: false,
         saveUninitialized: false,
         store: new prisma_session_store_1.PrismaSessionStore(new client_1.PrismaClient(), {
-            checkPeriod: 1000,
+            checkPeriod: 120000,
             dbRecordIdIsSessionId: true,
             dbRecordIdFunction: undefined,
         }),

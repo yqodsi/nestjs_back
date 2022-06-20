@@ -25,11 +25,10 @@ let AuthController = class AuthController {
         return;
     }
     async redirect(res) {
-        console.log('here');
         return this.authservice.redirect(res);
     }
     status(req) {
-        return req.user;
+        console.log("here");
     }
     logout(res) {
         res.sendStatus(200);
@@ -51,11 +50,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "redirect", null);
 __decorate([
+    (0, common_1.UseGuards)(authentication_guard_1.AuthenticationGuard),
     (0, common_1.Get)("status"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", String)
+    __metadata("design:returntype", void 0)
 ], AuthController.prototype, "status", null);
 __decorate([
     (0, common_1.UseGuards)(authentication_guard_1.AuthenticationGuard),

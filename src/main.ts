@@ -6,26 +6,24 @@ import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import { PrismaClient } from "@prisma/client";
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix("api");
   const PORT = process.env.PORT || 3003;
+  app.setGlobalPrefix("api");
 
   app.use(
     session({
       cookie: {
-        maxAge: 1000,
+        maxAge: 365 * 24 * 60 * 60 * 1000,
       },
-      name: "COOKIE_NAME",
-      secret: "ksdhdfgdfgdfgdfg",
+      secret: "secret",
       resave: false,
       saveUninitialized: false,
       store: new PrismaSessionStore(new PrismaClient(), {
-        checkPeriod: 1000, //ms
+        checkPeriod: 120000, //ms
         dbRecordIdIsSessionId: true,
         dbRecordIdFunction: undefined,
       }),
     })
   );
-
   app.use(passport.initialize());
   app.use(passport.session());
 

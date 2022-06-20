@@ -35,25 +35,24 @@ export class AuthController {
   @Get("redirect")
   @UseGuards(Passport42AuthGuard)
   async redirect(@Res() res: Response) {
-    console.log('here');
-    
     return this.authservice.redirect(res);
   }
 
   /**
-   * Get /api/auth/status
-   * This is the route user will visit for authentication
-   */
+  * Get /api/auth/status
+  * This is the route user will visit for authentication
+  */
 
+  @UseGuards(AuthenticationGuard)
   @Get("status")
-  status(@Req() req: any): string {
-    return req.user;
+  status(@Req() req: any) {
+    console.log("here");
   }
 
   /**
-   * Get /api/auth/logout
-   * This is the route user will visit for authentication
-   */
+  * Get /api/auth/logout
+  * This is the route user will visit for authentication
+  */
   @UseGuards(AuthenticationGuard)
   @Get("logout")
   logout(@Res() res: Response) {

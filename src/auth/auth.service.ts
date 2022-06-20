@@ -5,7 +5,6 @@ import {
 import { AuthenticationProvider } from "./utils/auth";
 import { UserDetails } from "./utils/types";
 import { User } from "@prisma/client";
-import * as session from 'express-session';
 
 @Injectable()
 export class AuthService implements AuthenticationProvider {
@@ -47,6 +46,5 @@ export class AuthService implements AuthenticationProvider {
 
   async redirect(res) {
     res.sendStatus(200);
-
   }
 }

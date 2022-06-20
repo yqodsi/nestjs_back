@@ -1,10 +1,7 @@
 import { Strategy, Profile, VerifyCallback } from "passport-42";
 import { PassportStrategy } from "@nestjs/passport";
-import { Injectable, Inject } from "@nestjs/common";
-import { PrismaService } from "../../prisma/prisma.service";
-import { userInfo } from "os";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { AuthenticationProvider } from "../utils/auth";
+import { Injectable } from "@nestjs/common";
+
 import { AuthService } from "../auth.service";
 
 @Injectable()
@@ -21,6 +18,6 @@ export class Passport42Strategy extends PassportStrategy(Strategy) {
     const email = emails[0].value as string;
     const avatar = photos[0].value as string;
     const details = { username, twentyFourId, avatar, email };
-    return this.authService.validateUser(details);
+    return await this.authService.validateUser(details);
   }
 }
