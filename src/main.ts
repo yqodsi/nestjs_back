@@ -8,13 +8,13 @@ async function bootstrap() {
   const PORT = process.env.PORT || 3003;
   app.use(cookieParser());
   app.enableCors({
-    // origin: '*',
-    // // credentials: true,
-    // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    // preflightContinue: false,
+    origin: '*',
+    // credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
 
   });
-  // app.use(cookieParser());
+  app.use(cookieParser());
   app.setGlobalPrefix("api");
   await app.listen(PORT);
 

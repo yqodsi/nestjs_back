@@ -13,7 +13,7 @@ exports.AuthService = void 0;
 const prisma_service_1 = require("../prisma/prisma.service");
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const bcrypt = require("bcrypt");
+const argon = require("argon2");
 let AuthService = class AuthService {
     constructor(prisma, jwtService) {
         this.prisma = prisma;
@@ -94,9 +94,9 @@ let AuthService = class AuthService {
                 id: userId,
             }
         });
-        if (!user)
+        if (!user || !user.hashedRt)
             throw new common_1.ForbiddenException("access denied");
-        const rtMatches = await bcrypt.compare(rt, user.hashedRt);
+        const rtMatches = await argon.verify(user.hashedRt, rt);
         if (!rtMatches)
             throw new common_1.ForbiddenException("access denied");
         const tokens = await this.login(user);
@@ -104,7 +104,7 @@ let AuthService = class AuthService {
         return tokens;
     }
     async hashData(data) {
-        return bcrypt.hash(data, 10);
+        return await argon.hash(data);
     }
     async updateRtHash(userId, rt) {
         const hash = await this.hashData(rt);

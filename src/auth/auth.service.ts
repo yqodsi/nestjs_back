@@ -7,6 +7,8 @@ import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 import { Tokens } from "./utils/token.types";
 import { Profile } from 'passport-42';
+import * as argon   from 'argon2';
+
 @Injectable()
 export class AuthService implements AuthenticationProvider {
   constructor(private prisma: PrismaService, private jwtService: JwtService) {}
@@ -92,9 +94,9 @@ export class AuthService implements AuthenticationProvider {
         id: userId,
       }
     })
-    if (!user)
+    if (!user || !user.hashedRt)
       throw new ForbiddenException("access denied");
-    const rtMatches = await bcrypt.compare(rt, user.hashedRt);
+    const rtMatches = await argon.verify(user.hashedRt, rt);
     if (!rtMatches)
       throw new ForbiddenException("access denied");
     const tokens = await this.login(user);
@@ -103,7 +105,8 @@ export class AuthService implements AuthenticationProvider {
   }
 
   async hashData(data: string) {
-    return bcrypt.hash(data, 10);
+    return await argon.hash(data)
+    // return bcrypt.hash(data, 10);
   }
 
   async updateRtHash(userId: number, rt: string) {

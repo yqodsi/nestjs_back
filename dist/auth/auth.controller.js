@@ -23,20 +23,19 @@ let AuthController = class AuthController {
         this.authservice = authservice;
     }
     login(req) {
-        console.log(req.user);
         return;
     }
     async redirect(req, res) {
         const { user, } = req;
         if (!user) {
-            res.redirect("/");
+            res.redirect("http://localhost:3000/");
             return;
         }
-        console.log(req.user);
-        console.log('cookiesssss', req.cookies);
+        req.user = undefined;
         const tokens = await this.authservice.login(user);
         await this.authservice.updateRtHash(parseInt(user.id), tokens.refreshToken);
         res.set("Authorization", `Bearer ${tokens.accessToken}`);
+        console.log('lkiwa2');
         res.cookie("access_token", tokens.accessToken);
         res.cookie("refresh_token", tokens.refreshToken);
         res.redirect("http://localhost:3000/");
@@ -46,7 +45,8 @@ let AuthController = class AuthController {
         return { msg: "hello" };
     }
     logout(req) {
-        console.log(req.user, "what");
+        const user = req.user;
+        return this.authservice.logout(user["id"]);
     }
     refreshToken(req) {
         const user = req.user;

@@ -35,7 +35,7 @@ export class AuthController {
   @UseGuards(Passport42AuthGuard)
   @HttpCode(HttpStatus.OK)
   login(@Req() req): any {
-    console.log(req.user);
+    // console.log(req.user);
 
     return;
   }
@@ -56,21 +56,23 @@ export class AuthController {
     const {
       user,
     }: {
-      user: Profile;
+        user: Profile;
+
     } = req;
 
+
     if (!user) {
-      res.redirect("/");
+      res.redirect("http://localhost:3000/");
       return;
     }
 
-    // req.user = undefined;
-    console.log(req.user);
-    console.log( 'cookiesssss',req.cookies);
+    req.user = undefined;
+    // console.log(req.user);
 
     const tokens = await this.authservice.login(user);
     await this.authservice.updateRtHash(parseInt(user.id), tokens.refreshToken);
     res.set("Authorization", `Bearer ${tokens.accessToken}`);
+    console.log('lkiwa2');
 
     res.cookie("access_token", tokens.accessToken);
     res.cookie("refresh_token", tokens.refreshToken);
@@ -97,9 +99,9 @@ export class AuthController {
   @Post("logout")
   @HttpCode(HttpStatus.OK)
   logout(@Req() req: any) {
-    console.log(req.user, "what");
+    const user = req.user;
 
-    // return this.authservice.logout(userId);
+    return this.authservice.logout(user["id"]);
   }
   @Public()
   @UseGuards(JwtRtAuthGuard)

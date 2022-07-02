@@ -9,6 +9,6 @@ export declare class AuthController {
     status(req: any): {
         msg: string;
     };
-    logout(req: any): void;
+    logout(req: any): Promise<void>;
     refreshToken(req: any): Promise<Tokens>;
 }
