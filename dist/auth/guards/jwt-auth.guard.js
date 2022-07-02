@@ -9,27 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SessionSerializer = void 0;
+exports.JwtAuthGuard = void 0;
 const passport_1 = require("@nestjs/passport");
 const common_1 = require("@nestjs/common");
-const auth_service_1 = require("../auth.service");
-let SessionSerializer = class SessionSerializer extends passport_1.PassportSerializer {
-    constructor(authService) {
+const core_1 = require("@nestjs/core");
+let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)("jwt") {
+    constructor(reflector) {
         super();
-        this.authService = authService;
+        this.reflector = reflector;
     }
-    serializeUser(user, done) {
-        done(null, user);
-    }
-    async deserializeUser(user, done) {
-        const userDB = await this.authService.findUser(user.twentyFourId);
-        console.log("userdb", userDB);
-        return userDB ? done(null, userDB) : done(null, null);
+    canActivate(context) {
+        const isPublic = this.reflector.getAllAndOverride("IsPublic", [
+            context.getHandler(),
+            context.getClass(),
+        ]);
+        console.log("isPublic", isPublic);
+        if (isPublic)
+            return true;
+        return super.canActivate(context);
     }
 };
-SessionSerializer = __decorate([
+JwtAuthGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [auth_service_1.AuthService])
-], SessionSerializer);
-exports.SessionSerializer = SessionSerializer;
-//# sourceMappingURL=Serializer.js.map
+    __metadata("design:paramtypes", [core_1.Reflector])
+], JwtAuthGuard);
+exports.JwtAuthGuard = JwtAuthGuard;
+//# sourceMappingURL=jwt-auth.guard.js.map

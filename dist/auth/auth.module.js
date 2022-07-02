@@ -11,15 +11,18 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const passport_strategy_1 = require("./strategies/passport.strategy");
-const Serializer_1 = require("./utils/Serializer");
 const prisma_module_1 = require("../prisma/prisma.module");
+const jwt_1 = require("@nestjs/jwt");
+const jwt_startegy_1 = require("./strategies/jwt.startegy");
+const rt_strategy_1 = require("./strategies/rt.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule],
+        imports: [prisma_module_1.PrismaModule, jwt_1.JwtModule.register({})],
         controllers: [auth_controller_1.AuthController],
-        providers: [passport_strategy_1.Passport42Strategy, Serializer_1.SessionSerializer, auth_service_1.AuthService],
+        providers: [passport_strategy_1.Passport42Strategy, auth_service_1.AuthService, jwt_startegy_1.JwtStrategy, rt_strategy_1.JwtRtStrategy],
+        exports: [auth_service_1.AuthService],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

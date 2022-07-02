@@ -19,13 +19,7 @@ model User {
   customName        String?
   email       String?
   avatarUrl   String?
-
+  hashedRt String?
+  firstTime Boolean?
   @@map("users")
-}
-
-model Session {
-  id        String   @id
-  sid       String   @unique
-  data      String
-  expiresAt   DateTime
 }

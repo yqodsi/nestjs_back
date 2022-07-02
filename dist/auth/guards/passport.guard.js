@@ -10,12 +10,6 @@ exports.Passport42AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 let Passport42AuthGuard = class Passport42AuthGuard extends (0, passport_1.AuthGuard)("42") {
-    async canActivate(context) {
-        const activate = (await super.canActivate(context));
-        const request = context.switchToHttp().getRequest();
-        await super.logIn(request);
-        return activate;
-    }
 };
 Passport42AuthGuard = __decorate([
     (0, common_1.Injectable)()
