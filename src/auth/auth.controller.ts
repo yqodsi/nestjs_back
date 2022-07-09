@@ -71,8 +71,7 @@ export class AuthController {
 
     const tokens = await this.authservice.login(user);
     await this.authservice.updateRtHash(parseInt(user.id), tokens.refreshToken);
-    res.set("Authorization", `Bearer ${tokens.accessToken}`);
-    console.log('lkiwa2');
+    // res.set("Authorization", `Bearer ${tokens.accessToken}`);
 
     res.cookie("access_token", tokens.accessToken);
     res.cookie("refresh_token", tokens.refreshToken);

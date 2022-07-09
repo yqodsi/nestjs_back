@@ -4,7 +4,6 @@ import { AuthenticationProvider } from "./utils/auth";
 import { UserDetails } from "./utils/types";
 import { User } from "@prisma/client";
 import { JwtService } from "@nestjs/jwt";
-import * as bcrypt from "bcrypt";
 import { Tokens } from "./utils/token.types";
 import { Profile } from 'passport-42';
 import * as argon   from 'argon2';

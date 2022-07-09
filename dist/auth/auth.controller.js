@@ -34,8 +34,6 @@ let AuthController = class AuthController {
         req.user = undefined;
         const tokens = await this.authservice.login(user);
         await this.authservice.updateRtHash(parseInt(user.id), tokens.refreshToken);
-        res.set("Authorization", `Bearer ${tokens.accessToken}`);
-        console.log('lkiwa2');
         res.cookie("access_token", tokens.accessToken);
         res.cookie("refresh_token", tokens.refreshToken);
         res.redirect("http://localhost:3000/");
