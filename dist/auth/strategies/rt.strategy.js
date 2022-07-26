@@ -8,30 +8,52 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var JwtRtStrategy_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JwtRtStrategy = void 0;
 const passport_1 = require("@nestjs/passport");
 const passport_jwt_1 = require("passport-jwt");
 const common_1 = require("@nestjs/common");
-let JwtRtStrategy = class JwtRtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, "jwt-refresh") {
+let JwtRtStrategy = JwtRtStrategy_1 = class JwtRtStrategy extends (0, passport_1.PassportStrategy)(passport_jwt_1.Strategy, "jwt-refresh") {
     constructor() {
         super({
-            jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: passport_jwt_1.ExtractJwt.fromExtractors([
+                JwtRtStrategy_1.extractJWT,
+                passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ]),
             ignoreExpiration: false,
             secretOrKey: process.env.JWT_RT_SECRET,
             passReqToCallback: true,
         });
     }
+    static extractJWT(req) {
+        if (req.cookies &&
+            "refresh_token" in req.cookies &&
+            req.cookies.refresh_token.length > 0) {
+            console.log("ref", req.cookies.refresh_token);
+            return req.cookies.refresh_token;
+        }
+        return null;
+    }
     async validate(req, payload) {
-        const refreshToken = req.get("authorization").replace("Bearer ", "").trim();
-        console.log("refrehToken", refreshToken);
+        const refreshToken = req.cookies.refresh_token;
+        console.log("ref", refreshToken);
         return {
             id: payload.sub,
             refreshToken,
         };
     }
 };
-JwtRtStrategy = __decorate([
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", String)
+], JwtRtStrategy, "extractJWT", null);
+JwtRtStrategy = JwtRtStrategy_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], JwtRtStrategy);

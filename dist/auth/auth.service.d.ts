@@ -3,8 +3,8 @@ import { AuthenticationProvider } from "./utils/auth";
 import { UserDetails } from "./utils/types";
 import { User } from "@prisma/client";
 import { JwtService } from "@nestjs/jwt";
-import { Tokens } from "./utils/token.types";
-import { Profile } from 'passport-42';
+import { Token } from "./utils/token.types";
+import { Profile } from "passport-42";
 export declare class AuthService implements AuthenticationProvider {
     private prisma;
     private jwtService;
@@ -12,9 +12,10 @@ export declare class AuthService implements AuthenticationProvider {
     validateUser(details: UserDetails): Promise<User>;
     createUser(details: UserDetails): Promise<User>;
     findUser(twentyFourId: string): Promise<User | undefined>;
-    login(user: Profile): Promise<Tokens>;
+    login(user: Profile): Promise<Token>;
     logout(userId: number): Promise<void>;
-    refreshToken(userId: number, rt: string): Promise<Tokens>;
+    test(): {
+        msg: string;
+    };
     hashData(data: string): Promise<string>;
-    updateRtHash(userId: number, rt: string): Promise<void>;
 }

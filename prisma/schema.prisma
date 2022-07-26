@@ -19,7 +19,8 @@ model User {
   customName        String?
   email       String?
   avatarUrl   String?
-  hashedRt String?
   firstTime Boolean?
+  isTwoFactorAuthenticationEnabled Boolean?
+  twoFactorAuthenticationCode String?
   @@map("users")
 }

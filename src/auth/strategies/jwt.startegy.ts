@@ -7,10 +7,24 @@ import { Injectable, Req } from "@nestjs/common";
 export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        JwtStrategy.extractJWT,
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ]),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });
+  }
+
+  private static extractJWT(@Req() req: any): string | null {
+    if (
+      req.cookies &&
+      "access_token" in req.cookies &&
+      req.cookies.access_token.length > 0
+      ) {
+        return req.cookies.access_token;
+    }
+    return null;
   }
 
   async validate(payload: any) {
@@ -19,5 +33,4 @@ export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
       username: payload.name,
     };
   }
-
 }

@@ -6,6 +6,8 @@ import { ConfigModule } from "@nestjs/config";
 import { PassportModule } from '@nestjs/passport';
 import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { ChatModule } from './chat/chat.module';
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     AuthModule,
     UserModule,
     PrismaModule,
+    ChatModule,
+    GameModule,
   ],
   providers: [
     {

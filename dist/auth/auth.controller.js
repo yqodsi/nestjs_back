@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const passport_guard_1 = require("./guards/passport.guard");
 const decorators_1 = require("./common/decorators");
-const rt_jwt_auth_guard_1 = require("./guards/rt-jwt-auth.guard");
+const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
 let AuthController = class AuthController {
     constructor(authservice) {
         this.authservice = authservice;
@@ -33,23 +33,22 @@ let AuthController = class AuthController {
         }
         req.user = undefined;
         const tokens = await this.authservice.login(user);
-        await this.authservice.updateRtHash(parseInt(user.id), tokens.refreshToken);
-        res.cookie("access_token", tokens.accessToken);
-        res.cookie("refresh_token", tokens.refreshToken);
-        res.redirect("http://localhost:3000/");
+        res.cookie("access_token", tokens.accessToken, {
+            httpOnly: true,
+        });
+        res.send(user);
     }
-    status(req) {
-        console.log("hohoho");
+    status(req, res) {
+        res.send(req.user);
         return { msg: "hello" };
     }
-    logout(req) {
-        const user = req.user;
-        return this.authservice.logout(user["id"]);
+    logout(req, res) {
+        const token = "access_token";
+        res.clearCookie(token);
+        res.send("logout succesufully");
     }
-    refreshToken(req) {
-        const user = req.user;
-        console.log(req.user, "refre");
-        return this.authservice.refreshToken(user["id"], user["refreshToken"]);
+    test() {
+        return this.authservice.test();
     }
 };
 __decorate([
@@ -66,6 +65,7 @@ __decorate([
     (0, decorators_1.Public)(),
     (0, common_1.Get)("redirect"),
     (0, common_1.UseGuards)(passport_guard_1.Passport42AuthGuard),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
@@ -76,28 +76,26 @@ __decorate([
 __decorate([
     (0, common_1.Get)("status"),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "status", null);
 __decorate([
-    (0, common_1.Post)("logout"),
+    (0, common_1.Get)("logout"),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "logout", null);
 __decorate([
-    (0, decorators_1.Public)(),
-    (0, common_1.UseGuards)(rt_jwt_auth_guard_1.JwtRtAuthGuard),
-    (0, common_1.Post)("refresh"),
-    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    __param(0, (0, common_1.Req)()),
+    (0, common_1.Get)("test2"),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], AuthController.prototype, "refreshToken", null);
+], AuthController.prototype, "test", null);
 AuthController = __decorate([
     (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

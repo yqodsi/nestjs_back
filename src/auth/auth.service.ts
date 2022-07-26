@@ -4,9 +4,9 @@ import { AuthenticationProvider } from "./utils/auth";
 import { UserDetails } from "./utils/types";
 import { User } from "@prisma/client";
 import { JwtService } from "@nestjs/jwt";
-import { Tokens } from "./utils/token.types";
-import { Profile } from 'passport-42';
-import * as argon   from 'argon2';
+import { Token } from "./utils/token.types";
+import { Profile } from "passport-42";
+import * as argon from "argon2";
 
 @Injectable()
 export class AuthService implements AuthenticationProvider {
@@ -14,7 +14,6 @@ export class AuthService implements AuthenticationProvider {
 
   async validateUser(details: UserDetails) {
     const { twentyFourId } = details;
-
     const user = await this.prisma.user.findUnique({
       where: {
         twentyFourId,
@@ -55,68 +54,23 @@ export class AuthService implements AuthenticationProvider {
     });
   }
 
-  async login(user: Profile): Promise<Tokens> {
+  async login(user: Profile): Promise<Token> {
     const payload = { name: user.username, sub: user.id };
-    const [at, rt] = await Promise.all([
-      this.jwtService.signAsync(payload, {
-        expiresIn: '60s', // expires in 15 minutes
-        secret: process.env.JWT_SECRET,
-      }),
-      this.jwtService.signAsync(payload, {
-        expiresIn: 60 * 60 * 24 * 7, // expires in 7 days
-        secret: process.env.JWT_RT_SECRET,
-      }),
-    ]);
+    const at = await this.jwtService.signAsync(payload, {
+      expiresIn: "1h",
+      secret: process.env.JWT_SECRET,
+    });
     return {
       accessToken: at,
-      refreshToken: rt,
     };
   }
 
-  async logout(userId: number) {
-    await this.prisma.user.updateMany({
-      where: {
-        id: userId,
-        hashedRt: {
-          not: null,
-        },
-      },
-      data: {
-        hashedRt: null,
-      },
-    });
-  }
+  async logout(userId: number) {}
 
-  async refreshToken(userId: number, rt: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      }
-    })
-    if (!user || !user.hashedRt)
-      throw new ForbiddenException("access denied");
-    const rtMatches = await argon.verify(user.hashedRt, rt);
-    if (!rtMatches)
-      throw new ForbiddenException("access denied");
-    const tokens = await this.login(user);
-    await this.updateRtHash(user.id, tokens.refreshToken);
-    return tokens;
+  test() {
+    return { msg: "hello" };
   }
-
   async hashData(data: string) {
-    return await argon.hash(data)
-    // return bcrypt.hash(data, 10);
-  }
-
-  async updateRtHash(userId: number, rt: string) {
-    const hash = await this.hashData(rt);
-    await this.prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        hashedRt: hash,
-      },
-    });
+    return await argon.hash(data);
   }
 }

@@ -60,62 +60,20 @@ let AuthService = class AuthService {
     }
     async login(user) {
         const payload = { name: user.username, sub: user.id };
-        const [at, rt] = await Promise.all([
-            this.jwtService.signAsync(payload, {
-                expiresIn: '60s',
-                secret: process.env.JWT_SECRET,
-            }),
-            this.jwtService.signAsync(payload, {
-                expiresIn: 60 * 60 * 24 * 7,
-                secret: process.env.JWT_RT_SECRET,
-            }),
-        ]);
+        const at = await this.jwtService.signAsync(payload, {
+            expiresIn: "1h",
+            secret: process.env.JWT_SECRET,
+        });
         return {
             accessToken: at,
-            refreshToken: rt,
         };
     }
-    async logout(userId) {
-        await this.prisma.user.updateMany({
-            where: {
-                id: userId,
-                hashedRt: {
-                    not: null,
-                },
-            },
-            data: {
-                hashedRt: null,
-            },
-        });
-    }
-    async refreshToken(userId, rt) {
-        const user = await this.prisma.user.findUnique({
-            where: {
-                id: userId,
-            }
-        });
-        if (!user || !user.hashedRt)
-            throw new common_1.ForbiddenException("access denied");
-        const rtMatches = await argon.verify(user.hashedRt, rt);
-        if (!rtMatches)
-            throw new common_1.ForbiddenException("access denied");
-        const tokens = await this.login(user);
-        await this.updateRtHash(user.id, tokens.refreshToken);
-        return tokens;
+    async logout(userId) { }
+    test() {
+        return { msg: "hello" };
     }
     async hashData(data) {
         return await argon.hash(data);
-    }
-    async updateRtHash(userId, rt) {
-        const hash = await this.hashData(rt);
-        await this.prisma.user.update({
-            where: {
-                id: userId,
-            },
-            data: {
-                hashedRt: hash,
-            },
-        });
     }
 };
 AuthService = __decorate([

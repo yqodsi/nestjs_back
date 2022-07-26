@@ -6,7 +6,6 @@ import {
   UseGuards,
   Res,
   Req,
-  Redirect,
   HttpCode,
   HttpStatus,
 } from "@nestjs/common";
@@ -15,12 +14,12 @@ import { Passport42AuthGuard } from "./guards/passport.guard";
 import { Request, Response } from "express";
 
 import { Profile, use } from "passport";
-import { Tokens } from "./utils/token.types";
-import { JwtRtStrategy } from "./strategies/rt.strategy";
-import { GetCurrentUserId, GetCurrentUser, Public } from "./common/decorators";
+import { Token } from "./utils/token.types";
+import { Public } from "./common/decorators";
 import { User } from "@prisma/client";
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { JwtRtAuthGuard } from './guards/rt-jwt-auth.guard';
+import { JwtAuthGuard } from "./guards/jwt-auth.guard";
+import { Redirect } from "@nestjs/common";
+import { Test } from "@nestjs/testing";
 
 @Controller("auth")
 export class AuthController {
@@ -29,7 +28,7 @@ export class AuthController {
   /**
    * Get /api/auth/login
    * This is the route user will visit for authentication
-   */
+  */
   @Public()
   @Get("login")
   @UseGuards(Passport42AuthGuard)
@@ -48,18 +47,14 @@ export class AuthController {
   @Public()
   @Get("redirect")
   @UseGuards(Passport42AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
-  async redirect(
-    @Req() req: any,
-    @Res({ passthrough: true }) res: Response
-  ): Promise<Tokens> {
+  async redirect(@Req() req: any, @Res({ passthrough: true }) res: Response) {
     const {
       user,
     }: {
-        user: Profile;
-
+      user: Profile;
     } = req;
-
 
     if (!user) {
       res.redirect("http://localhost:3000/");
@@ -70,17 +65,17 @@ export class AuthController {
     // console.log(req.user);
 
     const tokens = await this.authservice.login(user);
-    await this.authservice.updateRtHash(parseInt(user.id), tokens.refreshToken);
-    // res.set("Authorization", `Bearer ${tokens.accessToken}`);
 
-    res.cookie("access_token", tokens.accessToken);
-    res.cookie("refresh_token", tokens.refreshToken);
+    res.cookie("access_token", tokens.accessToken, {
+      httpOnly: true,
+    });
 
     // res.setHeader(
     //   "Set-Cookie",
     //   `access_token=${tokens.accessToken}; SameSite=Strict; Secure; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`
     // );
-    res.redirect("http://localhost:3000/");
+    // res.redirect("http://localhost:3000/");
+    res.send(user);
   }
 
   /**
@@ -89,26 +84,25 @@ export class AuthController {
    */
 
   @Get("status")
-  status(@Req() req: any) {
-    console.log("hohoho");
+  status(@Req() req: any, @Res() res: any) {
+    res.send(req.user);
     return { msg: "hello" };
   }
 
 
-  @Post("logout")
+  @Get("logout")
   @HttpCode(HttpStatus.OK)
-  logout(@Req() req: any) {
-    const user = req.user;
+  logout(@Req() req: any, @Res() res: any) {
+    // const user = req.user;
 
-    return this.authservice.logout(user["id"]);
+    // return this.authservice.logout(user["id"]);
+    const token = "access_token";
+    res.clearCookie(token);
+    res.send("logout succesufully");
   }
-  @Public()
-  @UseGuards(JwtRtAuthGuard)
-  @Post("refresh")
-  @HttpCode(HttpStatus.OK)
-  refreshToken(@Req() req: any) {
-    const user = req.user;
-    console.log(req.user, "refre");
-    return this.authservice.refreshToken(user["id"], user["refreshToken"]);
+
+  @Get("test2")
+  test() {
+    return this.authservice.test()
   }
 }

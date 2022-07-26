@@ -14,14 +14,13 @@ const passport_strategy_1 = require("./strategies/passport.strategy");
 const prisma_module_1 = require("../prisma/prisma.module");
 const jwt_1 = require("@nestjs/jwt");
 const jwt_startegy_1 = require("./strategies/jwt.startegy");
-const rt_strategy_1 = require("./strategies/rt.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [prisma_module_1.PrismaModule, jwt_1.JwtModule.register({})],
         controllers: [auth_controller_1.AuthController],
-        providers: [passport_strategy_1.Passport42Strategy, auth_service_1.AuthService, jwt_startegy_1.JwtStrategy, rt_strategy_1.JwtRtStrategy],
+        providers: [passport_strategy_1.Passport42Strategy, auth_service_1.AuthService, jwt_startegy_1.JwtStrategy],
         exports: [auth_service_1.AuthService],
     })
 ], AuthModule);
