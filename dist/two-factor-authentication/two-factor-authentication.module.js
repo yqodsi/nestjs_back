@@ -6,17 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModule = void 0;
+exports.TwoFactorAuthenticationModule = void 0;
 const common_1 = require("@nestjs/common");
-const user_controller_1 = require("./user.controller");
-const user_service_1 = require("./user.service");
-let UserModule = class UserModule {
+const two_factor_authentication_controller_1 = require("./two-factor-authentication.controller");
+const two_factor_authentication_service_1 = require("./two-factor-authentication.service");
+let TwoFactorAuthenticationModule = class TwoFactorAuthenticationModule {
 };
-UserModule = __decorate([
+TwoFactorAuthenticationModule = __decorate([
     (0, common_1.Module)({
-        controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService]
+        controllers: [two_factor_authentication_controller_1.TwoFactorAuthenticationController],
+        providers: [two_factor_authentication_service_1.TwoFactorAuthenticationService]
     })
-], UserModule);
-exports.UserModule = UserModule;
-//# sourceMappingURL=user.module.js.map
+], TwoFactorAuthenticationModule);
+exports.TwoFactorAuthenticationModule = TwoFactorAuthenticationModule;
+//# sourceMappingURL=two-factor-authentication.module.js.map

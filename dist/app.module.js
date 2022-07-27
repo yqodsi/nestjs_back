@@ -9,13 +9,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const auth_module_1 = require("./auth/auth.module");
-const user_module_1 = require("./user/user.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const config_1 = require("@nestjs/config");
 const core_1 = require("@nestjs/core");
 const jwt_auth_guard_1 = require("./auth/guards/jwt-auth.guard");
 const chat_module_1 = require("./chat/chat.module");
 const game_module_1 = require("./game/game.module");
+const two_factor_authentication_module_1 = require("./two-factor-authentication/two-factor-authentication.module");
+const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -29,6 +30,7 @@ AppModule = __decorate([
             prisma_module_1.PrismaModule,
             chat_module_1.ChatModule,
             game_module_1.GameModule,
+            two_factor_authentication_module_1.TwoFactorAuthenticationModule,
         ],
         providers: [
             {
