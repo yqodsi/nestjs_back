@@ -70,6 +70,7 @@ let AuthService = class AuthService {
     }
     async logout(userId) { }
     test() {
+        console.log();
         return { msg: "hello" };
     }
     async hashData(data) {

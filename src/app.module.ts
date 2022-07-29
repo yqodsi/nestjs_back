@@ -7,8 +7,9 @@ import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { ChatModule } from './chat/chat.module';
 import { GameModule } from './game/game.module';
-import { TwoFactorAuthenticationModule } from './two-factor-authentication/two-factor-authentication.module';
+// import { TwoFactorAuthenticationModule } from './two-factor-authentication/two-factor-authentication.module';
 import { UserModule } from './user/user.module';
+
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { UserModule } from './user/user.module';
     PrismaModule,
     ChatModule,
     GameModule,
-    TwoFactorAuthenticationModule,
+    // TwoFactorAuthenticationModule,
   ],
   providers: [
     {

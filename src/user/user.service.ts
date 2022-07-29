@@ -34,6 +34,7 @@ export class UserService {
       },
       data: {
         avatarUrl: process.cwd() + "/uploads/profileimages/" + file.filename,
+        
       },
     });
     return us.avatarUrl;

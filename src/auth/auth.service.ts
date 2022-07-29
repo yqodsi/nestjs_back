@@ -54,7 +54,7 @@ export class AuthService implements AuthenticationProvider {
     });
   }
 
-  async login(user: Profile): Promise<Token> {
+  async login(user): Promise<Token> {
     const payload = { name: user.username, sub: user.id };
     const at = await this.jwtService.signAsync(payload, {
       expiresIn: "1h",
@@ -68,6 +68,8 @@ export class AuthService implements AuthenticationProvider {
   async logout(userId: number) {}
 
   test() {
+    console.log();
+
     return { msg: "hello" };
   }
   async hashData(data: string) {
