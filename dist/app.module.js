@@ -15,7 +15,10 @@ const core_1 = require("@nestjs/core");
 const jwt_auth_guard_1 = require("./auth/guards/jwt-auth.guard");
 const chat_module_1 = require("./chat/chat.module");
 const game_module_1 = require("./game/game.module");
+const two_factor_authentication_module_1 = require("./two-factor-authentication/two-factor-authentication.module");
 const user_module_1 = require("./user/user.module");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -29,12 +32,16 @@ AppModule = __decorate([
             prisma_module_1.PrismaModule,
             chat_module_1.ChatModule,
             game_module_1.GameModule,
+            two_factor_authentication_module_1.TwoFactorAuthenticationModule,
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(__dirname, "..", "uploads"),
+            }),
         ],
         providers: [
             {
                 provide: core_1.APP_GUARD,
                 useClass: jwt_auth_guard_1.JwtAuthGuard,
-            }
+            },
         ],
     })
 ], AppModule);

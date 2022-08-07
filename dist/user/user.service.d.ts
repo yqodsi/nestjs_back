@@ -6,4 +6,5 @@ export declare class UserService {
     getUsers(): import(".prisma/client").PrismaPromise<import(".prisma/client").User[]>;
     getUser(id: number): any;
     upload(file: any, user: any): Promise<any>;
+    setTwoFactorAuthenticationSecret(secret: string, userId: number): Promise<import(".prisma/client").User>;
 }

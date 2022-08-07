@@ -43,10 +43,20 @@ let UserService = class UserService {
                 id,
             },
             data: {
-                avatarUrl: process.cwd() + "/uploads/profileimages/" + file.filename,
+                avatarUrl: "/uploads/" + file.filename,
             },
         });
         return us.avatarUrl;
+    }
+    async setTwoFactorAuthenticationSecret(secret, userId) {
+        return this.prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                twoFactorAuthenticationCode: secret,
+            },
+        });
     }
 };
 UserService = __decorate([

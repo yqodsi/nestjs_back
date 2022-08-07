@@ -33,10 +33,20 @@ export class UserService {
         id,
       },
       data: {
-        avatarUrl: process.cwd() + "/uploads/profileimages/" + file.filename,
-        
+        avatarUrl:  "/uploads/" + file.filename,
       },
     });
     return us.avatarUrl;
+  }
+
+  async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
+    return this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        twoFactorAuthenticationCode: secret,
+      },
+    });
   }
 }

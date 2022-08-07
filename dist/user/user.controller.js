@@ -21,7 +21,7 @@ const path = require("path");
 const multer_1 = require("multer");
 exports.storage = {
     storage: (0, multer_1.diskStorage)({
-        destination: "./uploads/profileimages",
+        destination: "./uploads/",
         filename: (req, file, cb) => {
             const filename = path.parse(file.originalname).name.replace(/\s/g, "") + (0, uuid_1.v4)();
             const extention = path.parse(file.originalname).ext;

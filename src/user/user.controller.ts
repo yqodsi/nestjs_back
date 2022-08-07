@@ -15,7 +15,7 @@ import { diskStorage } from "multer";
 
 export const storage = {
   storage: diskStorage({
-    destination: "./uploads/profileimages",
+    destination: "./uploads/",
     filename: (req, file, cb) => {
       const filename: string =
         path.parse(file.originalname).name.replace(/\s/g, "") + uuidv4();

@@ -21,7 +21,6 @@ async function bootstrap() {
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup("api", app, document);
-    app.use(cookieParser());
     app.setGlobalPrefix("api");
     await app.listen(PORT);
     console.log(`Running on Port ${PORT}`);

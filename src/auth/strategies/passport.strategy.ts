@@ -13,7 +13,7 @@ export class Passport42Strategy extends PassportStrategy(Strategy) {
       callbackURL: process.env.PASSPORT_REDIRECT_URL,
     });
   }
-  async validate(accessToken: string, refreshToken: string, profile: Profile) {
+  async validate(accessToken: number, refreshToken: number, profile: Profile) {
     const { username, id: twentyFourId, photos, emails } = profile;
     const email = emails[0].value as string;
     const avatar = photos[0].value as string;

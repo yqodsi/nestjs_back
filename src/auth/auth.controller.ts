@@ -33,8 +33,7 @@ export class AuthController {
   @Get("login")
   @UseGuards(Passport42AuthGuard)
   @HttpCode(HttpStatus.OK)
-  login(@Req() req): any {
-    // console.log(req.user);
+  login() {
 
     return;
   }
@@ -47,7 +46,6 @@ export class AuthController {
   @Public()
   @Get("redirect")
   @UseGuards(Passport42AuthGuard)
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   async redirect(@Req() req: any, @Res({ passthrough: true }) res: Response) {
     const {
@@ -62,7 +60,7 @@ export class AuthController {
     }
 
     req.user = undefined;
-    // console.log(req.user);
+    console.log(user);
 
     const tokens = await this.authservice.login(user);
 

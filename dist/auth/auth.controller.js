@@ -17,12 +17,11 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const passport_guard_1 = require("./guards/passport.guard");
 const decorators_1 = require("./common/decorators");
-const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
 let AuthController = class AuthController {
     constructor(authservice) {
         this.authservice = authservice;
     }
-    login(req) {
+    login() {
         return;
     }
     async redirect(req, res) {
@@ -32,6 +31,7 @@ let AuthController = class AuthController {
             return;
         }
         req.user = undefined;
+        console.log(user);
         const tokens = await this.authservice.login(user);
         res.cookie("access_token", tokens.accessToken, {
             httpOnly: true,
@@ -56,16 +56,14 @@ __decorate([
     (0, common_1.Get)("login"),
     (0, common_1.UseGuards)(passport_guard_1.Passport42AuthGuard),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Object)
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
 __decorate([
     (0, decorators_1.Public)(),
     (0, common_1.Get)("redirect"),
     (0, common_1.UseGuards)(passport_guard_1.Passport42AuthGuard),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
